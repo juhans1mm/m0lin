@@ -1,0 +1,13 @@
+* {
+    font-family: "Arial";
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    max-width: 20%;
+}
+
+.column>button {
+    text-align: left;
+}
