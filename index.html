@@ -5,17 +5,26 @@
         <link rel="stylesheet" type="text/css" href="styles.css">
         <title>EAP clicker</title>
     </head>
+     <header>
+        <nav>
+            <a href="index.html">Play</a>
+            <a href="how-to-play.html">How To Play</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
     <body>
-        <div>
+        <div class="main-content">
             <div>
-                <p> Sekundeid: <span id="count_seconds">0</span></p>
-                <p> Minuteid: <span id="count_minutes">0</span></p>
-                <p> Tunde: <span id="count_hours">0</span></p>
-                <p> EAP: <span id="count_eap">0</span></p>
+                <div>
+                    <p> Sekundeid: <span id="count_seconds">0</span></p>
+                    <p> Minuteid: <span id="count_minutes">0</span></p>
+                    <p> Tunde: <span id="count_hours">0</span></p>
+                    <p> EAP: <span id="count_eap">0</span></p>
+                </div>
+                <button id="eapclick">Vajuta mind!</button>
             </div>
-            <button id="eapclick">Vajuta mind!</button>
+            <div id="upgrade_container" class="column"></div>
         </div>
-        <div id="upgrade_container" class="column"></div>
     </body>
     <script defer src="app.js"></script>
 </html>
