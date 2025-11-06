@@ -6,6 +6,18 @@ const counter_eap_el = document.getElementById("count_eap");
 const button_el = document.getElementById("eapclick");
 const upgrade_container_el = document.getElementById("upgrade_container");
 
+function fmt_time_as_price(seconds) {
+    if (seconds < 60) {
+        return `${seconds} s`
+    } else if (seconds < 3600) {
+        return `${seconds / 60} min`
+    } else if (seconds < 3600 * 27.5) {
+        return `${seconds / 3600} h`
+    } else {
+        return `${seconds / 3600 / 27.5} EAP`
+    }
+}
+
 const actual_game_state = {
     counter: 0.0,
     time: 0.0,
@@ -16,14 +28,15 @@ const actual_game_state = {
     },
 };
 
+function round_to(value, n) {
+    return +value.toFixed(n);
+}
+
 function update_counter_element(value) {
-    const make_nice = (value) => {
-        return +value.toFixed(2);
-    };
-    counter_seconds_el.innerText = make_nice(value);
-    counter_minutes_el.innerText = make_nice(value / 60.0);
-    counter_hours_el.innerText = make_nice(value / 3600.0);
-    counter_eap_el.innerText = make_nice(value / 3600.0 / 27.5);
+    counter_seconds_el.innerText = round_to(value % 60, 2);
+    counter_minutes_el.innerText = round_to(Math.floor(value / 60) % 60, 2);
+    counter_hours_el.innerText = round_to(Math.floor(value / 3600) % 27.5, 2);
+    counter_eap_el.innerText = round_to(Math.floor(value / 3600 / 27.5), 2);
 }
 
 const proxy_handler = {
@@ -49,12 +62,11 @@ button_el.onclick = (_) => {
     game_state.counter += game_state.minutes_per_click;
 }
 
-// Generate upgrade ui
 function init_upgrades() {
     for (const name in game_state.upgrades) {
         const upgrade = game_state.upgrades[name];
         const upgrade_text = (upgrade) => {
-            return `(${upgrade.count}) osta <b>${name}</b>, hind: ${+upgrade.price.toFixed(2)}`;
+            return `(${upgrade.count}) osta <b>${name}</b>, hind: ${fmt_time_as_price(round_to(upgrade.price, 2))}`;
         }
 
         upgrade.elem = document.createElement("button")
