@@ -6,19 +6,23 @@ const counter_eap_el = document.getElementById("count_eap");
 const button_el = document.getElementById("eapclick");
 const upgrade_container_el = document.getElementById("upgrade_container");
 
+function round_to(value, n) {
+    return +value.toFixed(n);
+}
+
 function fmt_time_as_price(seconds) {
     if (seconds < 60) {
-        return `${seconds} s`
+        return `${round_to(seconds, 2)} s`
     } else if (seconds < 3600) {
-        return `${seconds / 60} min`
+        return `${round_to(seconds / 60, 2)} min`
     } else if (seconds < 3600 * 27.5) {
-        return `${seconds / 3600} h`
+        return `${round_to(seconds / 3600, 2)} h`
     } else {
-        return `${seconds / 3600 / 27.5} EAP`
+        return `${round_to(seconds / 3600 / 27.5, 2)} EAP`
     }
 }
 
-const actual_game_state = {
+let actual_game_state = {
     counter: 0.0,
     time: 0.0,
     minutes_per_click: 1.0,
@@ -28,31 +32,31 @@ const actual_game_state = {
     },
 };
 
-function round_to(value, n) {
-    return +value.toFixed(n);
+function update_counter_element(state) {
+    counter_seconds_el.innerText = round_to(state.counter % 60, 2);
+    counter_minutes_el.innerText = round_to(Math.floor(state.counter / 60) % 60, 2);
+    counter_hours_el.innerText = round_to(Math.floor(state.counter / 3600) % 27.5, 2);
+    counter_eap_el.innerText = round_to(Math.floor(state.counter / 3600 / 27.5), 2);
 }
 
-function update_counter_element(value) {
-    counter_seconds_el.innerText = round_to(value % 60, 2);
-    counter_minutes_el.innerText = round_to(Math.floor(value / 60) % 60, 2);
-    counter_hours_el.innerText = round_to(Math.floor(value / 3600) % 27.5, 2);
-    counter_eap_el.innerText = round_to(Math.floor(value / 3600 / 27.5), 2);
+function update_upgrade_visibility(state) {
+    for (const name in state.upgrades) {
+        const upgrade = state.upgrades[name];
+        if (state.counter >= upgrade.price) {
+            upgrade.elem.removeAttribute("disabled")
+        } else {
+            upgrade.elem.setAttribute("disabled", "true")
+        }
+    }
 }
 
 const proxy_handler = {
     set(target, prop, value) {
-        if (prop === "counter") {
-            update_counter_element(value)
-            for (const name in target.upgrades) {
-                const upgrade = target.upgrades[name];
-                if (target.counter >= upgrade.price) {
-                    upgrade.elem.removeAttribute("disabled")
-                } else {
-                    upgrade.elem.setAttribute("disabled", "true")
-                }
-            }
-        }
         target[prop] = value;
+        if (prop === "counter") {
+            update_counter_element(target);
+            update_upgrade_visibility(target);
+        }
     }
 }
 
@@ -66,7 +70,7 @@ function init_upgrades() {
     for (const name in game_state.upgrades) {
         const upgrade = game_state.upgrades[name];
         const upgrade_text = (upgrade) => {
-            return `(${upgrade.count}) osta <b>${name}</b>, hind: ${fmt_time_as_price(round_to(upgrade.price, 2))}`;
+            return `(${upgrade.count}) osta <b>${name}</b>, hind: ${fmt_time_as_price(upgrade.price)}`;
         }
 
         upgrade.elem = document.createElement("button")
@@ -102,5 +106,33 @@ function update(time) {
     window.requestAnimationFrame(update);
 }
 
+function try_load_save() {
+    let save = localStorage.getItem("eap_clicker_save");
+    if (save === null) {
+        return;
+    }
+    console.log(`loading save: ${save}`);
+    try {
+        let parsed_save = JSON.parse(save);
+
+        actual_game_state.counter = parsed_save.counter;
+
+        for (const name in parsed_save.upgrades) {
+            actual_game_state.upgrades[name].count = parsed_save.upgrades[name].count;
+            actual_game_state.upgrades[name].price = parsed_save.upgrades[name].price;
+        }
+        
+        update_counter_element(actual_game_state)
+    } catch (e) {
+        console.log(`failed to load save: ${e}`);
+    }
+}
+
+try_load_save();
 init_upgrades();
+
+// Tobe lahendus
+setInterval(() => localStorage.setItem("eap_clicker_save", JSON.stringify(actual_game_state)), 3000)
+
+// Main loop sisuliselt
 window.requestAnimationFrame(update);
