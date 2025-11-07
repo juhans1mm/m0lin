@@ -2,6 +2,7 @@ const counter_seconds_el = document.getElementById("count_seconds");
 const counter_minutes_el = document.getElementById("count_minutes");
 const counter_hours_el = document.getElementById("count_hours");
 const counter_eap_el = document.getElementById("count_eap");
+const per_second_el = document.getElementById("per_second");
 
 const button_el = document.getElementById("eapclick");
 const upgrade_container_el = document.getElementById("upgrade_container");
@@ -24,6 +25,7 @@ function fmt_time_as_price(seconds) {
 
 let actual_game_state = {
     counter: 0.0,
+    cps: 0.0,
     time: 0.0,
     minutes_per_click: 1.0,
     upgrades: {
@@ -71,6 +73,15 @@ button_el.onclick = (_) => {
     game_state.counter += game_state.minutes_per_click;
 }
 
+function update_per_second() {
+    let base = 0;
+    for (const [_, upgrade] of Object.entries(game_state.upgrades)) {
+        base += upgrade.count * upgrade.boost;
+    }
+    game_state.cps = base;
+    per_second_el.innerText = fmt_time_as_price(base);
+}
+
 function init_upgrades() {
     for (const name in game_state.upgrades) {
         const upgrade = game_state.upgrades[name];
@@ -84,29 +95,24 @@ function init_upgrades() {
             if (game_state.counter < upgrade.price) {
                 return;
             }
+
             game_state.counter -= upgrade.price;
             upgrade.count += 1;
             upgrade.price *= upgrade.scaling;
             upgrade.elem.innerHTML = upgrade_text(upgrade);
+
+            update_per_second();
         }
 
         upgrade_container_el.appendChild(upgrade.elem);
     }
 }
 
-function calculate_auto_cps() {
-    let base = 0;
-    for (const [_, upgrade] of Object.entries(game_state.upgrades)) {
-        base += upgrade.count * upgrade.boost;
-    }
-    return base;
-}
-
 function update(time) {
     const dt = (time - game_state.time) / 1000.0;
 
     game_state.time = time;
-    game_state.counter += calculate_auto_cps() * dt;
+    game_state.counter += game_state.cps * dt;
 
     window.requestAnimationFrame(update);
 }
@@ -127,7 +133,7 @@ function try_load_save() {
             actual_game_state.upgrades[name].price = parsed_save.upgrades[name].price;
         }
         
-        update_counter_element(actual_game_state)
+        update_counter_element(actual_game_state);
     } catch (e) {
         console.log(`failed to load save: ${e}`);
     }
@@ -135,6 +141,7 @@ function try_load_save() {
 
 try_load_save();
 init_upgrades();
+update_per_second();
 
 // Tobe lahendus
 setInterval(() => localStorage.setItem("eap_clicker_save", JSON.stringify(actual_game_state)), 3000)
