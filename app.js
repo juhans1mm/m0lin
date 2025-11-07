@@ -29,6 +29,11 @@ let actual_game_state = {
     upgrades: {
         "zoute pinda's": { elem: null, count: 0, price: 10, scaling: 1.2, boost: 1   },
         "kohv":          { elem: null, count: 0, price: 25, scaling: 1.2, boost: 2.5 },
+        "energiajook":   { elem: null, count: 0, price: 100, scaling: 1.2, boost: 10 },
+        "pitsa":         { elem: null, count: 0, price: 150, scaling: 1.2, boost: 15 },
+        "pomodoro":      { elem: null, count: 0, price: 750, scaling: 1.2, boost: 50 },
+        "ghostwriter":   { elem: null, count: 0, price: 100000, scaling: 1.2, boost: 1000 },
+        "altkäemaks":    { elem: null, count: 0, price: 594000, scaling: 1.2, boost: 10000 },
     },
 };
 
