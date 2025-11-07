@@ -3,6 +3,7 @@ const counter_minutes_el = document.getElementById("count_minutes");
 const counter_hours_el = document.getElementById("count_hours");
 const counter_eap_el = document.getElementById("count_eap");
 const per_second_el = document.getElementById("per_second");
+const particle_container_el = document.getElementById("particle_container");
 
 const button_el = document.getElementById("eapclick");
 const upgrade_container_el = document.getElementById("upgrade_container");
@@ -25,9 +26,9 @@ function fmt_time_as_price(seconds) {
 
 let actual_game_state = {
     counter: 0.0,
-    cps: 0.0,
     time: 0.0,
-    minutes_per_click: 1.0,
+    cps: 0.0,
+    spc: 1.0,
     upgrades: {
         "zoute pinda's": { elem: null, count: 0, price: 10, scaling: 1.2, boost: 1   },
         "kohv":          { elem: null, count: 0, price: 25, scaling: 1.2, boost: 2.5 },
@@ -69,8 +70,27 @@ const proxy_handler = {
 
 const game_state = new Proxy(actual_game_state, proxy_handler);
 
+// https://stackoverflow.com/questions/4550505/getting-a-random-value-from-a-javascript-array
+function pick_random(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// Manuaalne nupp
 button_el.onclick = (_) => {
-    game_state.counter += game_state.minutes_per_click;
+    game_state.counter += game_state.spc;
+
+    let floater = document.createElement("div");
+    floater.innerText = "+" + fmt_time_as_price(game_state.spc);
+    floater.className = "particle";
+    floater.style["animation-name"] = pick_random([
+        "particle-motion-a",
+        "particle-motion-b",
+        "particle-motion-c",
+        "particle-motion-d"
+    ])
+    floater.addEventListener("animationend", () => particle_container_el.removeChild(floater));
+
+    particle_container_el.appendChild(floater);
 }
 
 function update_per_second() {

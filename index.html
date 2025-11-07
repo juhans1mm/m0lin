@@ -2,19 +2,26 @@
 <html lang="ee">
     <head>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik">
         <link rel="stylesheet" type="text/css" href="styles.css">
         <title>EAP clicker</title>
     </head>
     <body>
-        <div>
-            <div class="column">
-                <p><span id="count_hours"></span> H <span id="count_minutes"></span> min <span id="count_seconds"></span> s</p>
-                <p><span id="count_eap"></span> EAP</p>
-                <p><span id="per_second"></span> / s</p>
+        <div class="centerh">
+            <div class="column centerh">
+                <div class="column time_state">
+                    <p><span id="count_hours"></span> H <span id="count_minutes"></span> min <span id="count_seconds"></span> s</p>
+                    <p><span id="count_eap"></span> EAP</p>
+                    <p><span id="per_second"></span> / s</p>
+                </div>
+                <div id="button_area">
+                    <button id="eapclick"> Vajuta mind! </button>
+                    <div id="particle_container"></div>
+                </div>
+                <div id="upgrade_container" class="column upgrade_column"></div>
             </div>
-            <button id="eapclick">Vajuta mind!</button>
         </div>
-        <div id="upgrade_container" class="column"></div>
     </body>
     <script defer src="app.js"></script>
 </html>
+
