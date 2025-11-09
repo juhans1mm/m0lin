@@ -1,0 +1,169 @@
+:root {
+    --primary-bg: #2c5696;
+    --btn-highlight: #4d7acf;
+}
+
+* {
+    font-family: "Rubik";
+}
+
+body {
+    margin: 0px;
+}
+
+nav {
+    height: 6vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--primary-bg);
+}
+
+nav>a {
+    font-weight: bold;
+    font-size: larger;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.main-content {
+    margin-left: 8px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.upgrade_column>button {
+    margin-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    border-radius: 0.25em;
+}
+
+button {
+    color: white;
+    background-color: var(--primary-bg);
+    border: none;
+}
+
+button:hover {
+    background-color: var(--btn-highlight);
+}
+
+button:disabled {
+    background-color: gray;
+    color: lightgray;
+}
+
+.centerh {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.time_state {
+    text-align: center;
+}
+
+.time_state>p {
+    margin: 0; 
+    color: var(--primary-bg);
+    font-weight: bold;
+}
+
+.time_state p:nth-child(1) {
+    font-size: larger;
+}
+
+.time_state p:nth-child(2) {
+    font-size: xx-large;
+}
+
+.time_state p:nth-child(3) {
+    font-size: larger;
+    color: gray;
+}
+
+#eapclick {
+    border-radius: 50%;
+    padding: 1em;
+    height: 6em;
+    width: 6em;
+    margin: 1em;
+    font-size: larger;
+}
+
+#button_area {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    height: fit-content;
+}
+
+#particle_container {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    color: lightgray;
+}
+
+/* Vt https://www.geeksforgeeks.org/css/create-effect-of-particle-animation-uisng-css/ */
+@keyframes particle-motion-a {
+    0%{
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100%{
+        transform: translate(-4em, -10em);
+        opacity: 0;
+    }
+}
+
+@keyframes particle-motion-b {
+    0%{
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100%{
+        transform: translate(-2em, -8em);
+        opacity: 0;
+    }
+}
+
+@keyframes particle-motion-c {
+    0%{
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100%{
+        transform: translate(3em, -12em);
+        opacity: 0;
+    }
+}
+@keyframes particle-motion-d {
+    0%{
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100%{
+        transform: translate(4em, -10em);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ee">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script defer src="app.js"></script>
+        <title>EAP clicker</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a href="index.html">Play</a>
+                <a href="how-to-play.html">How To Play</a>
+                <a href="about.html">About</a>
+            </nav>
+        </header>
+        <div class="main-content">
+            <div class="centerh">
+                <div class="column centerh">
+                    <div class="column time_state">
+                        <p><span id="count_hours"></span> H <span id="count_minutes"></span> min <span id="count_seconds"></span> s</p>
+                        <p><span id="count_eap"></span> EAP</p>
+                        <p><span id="per_second"></span> / s</p>
+                    </div>
+                    <div id="button_area">
+                        <button id="eapclick"> Vajuta mind! </button>
+                        <div id="particle_container"></div>
+                    </div>
+                    <div id="upgrade_container" class="column upgrade_column"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
