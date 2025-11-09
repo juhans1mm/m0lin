@@ -7,6 +7,33 @@
     font-family: "Rubik";
 }
 
+body {
+    margin: 0px;
+}
+
+nav {
+    height: 6vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--primary-bg);
+}
+
+nav>a {
+    font-weight: bold;
+    font-size: larger;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.main-content {
+    margin-left: 8px;
+}
+
 .column {
     display: flex;
     flex-direction: column;
@@ -140,4 +167,3 @@ button:disabled {
         opacity: 0;
     }
 }
-
