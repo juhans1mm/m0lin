@@ -39,11 +39,19 @@ a {
     flex-direction: column;
 }
 
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.row_separator {
+    min-width: 1em;
+}
+
 .upgrade_column>button {
     margin-bottom: 1em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    border-radius: 0.25em;
+    padding: 1em;
+    border-radius: 0.5em;
 }
 
 button {
