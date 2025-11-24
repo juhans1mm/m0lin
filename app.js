@@ -36,18 +36,20 @@ let actual_game_state = {
         "zoute pinda's": { elem: null, for_click: false, count: 0, price: 10, scaling: 1.2, boost: 1   },
         "kohv":          { elem: null, for_click: false, count: 0, price: 25, scaling: 1.2, boost: 2.5 },
         "energiajook":   { elem: null, for_click: false, count: 0, price: 100, scaling: 1.2, boost: 10 },
-        "pitsa":         { elem: null, for_click: false, count: 0, price: 150, scaling: 1.2, boost: 15 },
-        "pomodoro":      { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 50 },
+        "pitsa":         { elem: null, for_click: false, count: 0, price: 150, scaling: 1.2, boost: 65 },
+        "pomodoro":      { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 150 },
+        "Y":             { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 500 },
         "ghostwriter":   { elem: null, for_click: false, count: 0, price: 100000, scaling: 1.2, boost: 1000 },
         "altkäemaks":    { elem: null, for_click: false, count: 0, price: 594000, scaling: 1.2, boost: 10000 },
         // Käsitsi kasutuseks
         "A": { elem: null, for_click: true, count: 0, price: 5, scaling: 1.2, boost: 3 },
-        "B": { elem: null, for_click: true, count: 0, price: 15, scaling: 1.2, boost: 7 },
-        "C": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.2, boost: 65 },
-        "D": { elem: null, for_click: true, count: 0, price: 200, scaling: 1.2, boost: 150 },
-        "E": { elem: null, for_click: true, count: 0, price: 1000, scaling: 1.3, boost: 500 },
-        "F": { elem: null, for_click: true, count: 0, price: 220000, scaling: 1.3, boost: 10000 },
-        "G": { elem: null, for_click: true, count: 0, price: 1000000, scaling: 1.3, boost: 1000000 },
+        "B": { elem: null, for_click: true, count: 0, price: 15, scaling: 1.2, boost: 10 },
+        "X": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 75 },
+        "C": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 250 },
+        "D": { elem: null, for_click: true, count: 0, price: 200, scaling: 1.4, boost: 500 },
+        "E": { elem: null, for_click: true, count: 0, price: 1000, scaling: 1.4, boost: 1000 },
+        "F": { elem: null, for_click: true, count: 0, price: 220000, scaling: 1.4, boost: 5000 },
+        "G": { elem: null, for_click: true, count: 0, price: 1000000, scaling: 1.4, boost: 100000 },
     },
 };
 
@@ -154,6 +156,11 @@ function update(time) {
 
     game_state.time = time;
     game_state.counter += game_state.cps * dt;
+
+    // Failsafe, vältimaks softlocki
+    if (actual_game_state.spc <= 1) {
+        actual_game_state.spc = 1;
+    }
 
     window.requestAnimationFrame(update);
 }
