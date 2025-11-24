@@ -7,12 +7,18 @@
     font-family: "Rubik";
 }
 
-body {
+html, body {
+    height: 100%;
     margin: 0px;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 nav {
-    height: 6vh;
+    padding: 1em;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -31,6 +37,7 @@ a {
 }
 
 .main-content {
+    flex: 1;
     margin-left: 8px;
 }
 
@@ -52,6 +59,9 @@ a {
     margin-bottom: 1em;
     padding: 1em;
     border-radius: 0.5em;
+    width: 20em;
+    min-width: 20em;
+    overflow: hidden;
 }
 
 button {
@@ -69,7 +79,7 @@ button:disabled {
     color: lightgray;
 }
 
-.centerh {
+.center {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,6 +87,9 @@ button:disabled {
 
 .time_state {
     text-align: center;
+    overflow: hidden;
+    width: 24em;
+    max-width: 24em;
 }
 
 .time_state>p {
