@@ -89,12 +89,14 @@ function pick_random(arr) {
 }
 
 // Manuaalne nupp
-button_el.onclick = (_) => {
+button_el.onclick = (e) => {
     game_state.counter += game_state.spc;
 
     let floater = document.createElement("div");
     floater.innerText = "+" + fmt_time_as_price(game_state.spc);
     floater.className = "particle";
+    floater.style.left = e.clientX + "px";
+    floater.style.top = e.clientY + "px";
     floater.style["animation-name"] = pick_random([
         "particle-motion-a",
         "particle-motion-b",
