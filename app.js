@@ -189,6 +189,11 @@ function try_load_save() {
     }
 }
 
+function delete_save() {
+    localStorage.clear();
+    window.location.reload();
+}
+
 try_load_save();
 init_upgrades();
 update_per_second();
