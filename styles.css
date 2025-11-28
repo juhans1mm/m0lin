@@ -43,6 +43,15 @@ a {
     color: black;
 }
 
+.img_div {
+    display: flex;
+    gap: 10px;
+}
+.img_div img {
+    flex: 1;
+    width: 50%;
+    height: auto;
+}
 .main-content {
     flex: 1;
     margin-left: 8px;
@@ -86,6 +95,10 @@ button:hover {
 button:disabled {
     background-color: gray;
     color: lightgray;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 .center-text {
