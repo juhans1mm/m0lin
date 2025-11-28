@@ -6,7 +6,9 @@ const per_second_el = document.getElementById("per_second");
 const particle_container_el = document.getElementById("particle_container");
 
 const button_el = document.getElementById("eapclick");
-const upgrade_container_el = document.getElementById("upgrade_container");
+
+const auto_upgrade_container_el = document.getElementById("upgrade_container");
+const manual_upgrade_container_el = document.getElementById("manual_upgrade_container");
 
 function round_to(value, n) {
     return +value.toFixed(n);
@@ -17,10 +19,10 @@ function fmt_time_as_price(seconds) {
         return `${round_to(seconds, 2)} s`
     } else if (seconds < 3600) {
         return `${round_to(seconds / 60, 2)} min`
-    } else if (seconds < 3600 * 27.5) {
+    } else if (seconds < 3600 * 26) {
         return `${round_to(seconds / 3600, 2)} h`
     } else {
-        return `${round_to(seconds / 3600 / 27.5, 2)} EAP`
+        return `${round_to(seconds / 3600 / 26, 2)} EAP`
     }
 }
 
@@ -30,21 +32,32 @@ let actual_game_state = {
     cps: 0.0,
     spc: 1.0,
     upgrades: {
-        "zoute pinda's": { elem: null, count: 0, price: 10, scaling: 1.2, boost: 1   },
-        "kohv":          { elem: null, count: 0, price: 25, scaling: 1.2, boost: 2.5 },
-        "energiajook":   { elem: null, count: 0, price: 100, scaling: 1.2, boost: 10 },
-        "pitsa":         { elem: null, count: 0, price: 150, scaling: 1.2, boost: 15 },
-        "pomodoro":      { elem: null, count: 0, price: 750, scaling: 1.2, boost: 50 },
-        "ghostwriter":   { elem: null, count: 0, price: 100000, scaling: 1.2, boost: 1000 },
-        "altkäemaks":    { elem: null, count: 0, price: 594000, scaling: 1.2, boost: 10000 },
+        // automaatne
+        "zoute pinda's": { elem: null, for_click: false, count: 0, price: 10, scaling: 1.2, boost: 1   },
+        "kohv":          { elem: null, for_click: false, count: 0, price: 25, scaling: 1.2, boost: 2.5 },
+        "energiajook":   { elem: null, for_click: false, count: 0, price: 100, scaling: 1.2, boost: 10 },
+        "pitsa":         { elem: null, for_click: false, count: 0, price: 150, scaling: 1.2, boost: 65 },
+        "pomodoro":      { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 150 },
+        "Y":             { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 500 },
+        "ghostwriter":   { elem: null, for_click: false, count: 0, price: 100000, scaling: 1.2, boost: 1000 },
+        "altkäemaks":    { elem: null, for_click: false, count: 0, price: 594000, scaling: 1.2, boost: 10000 },
+        // Käsitsi kasutuseks
+        "A": { elem: null, for_click: true, count: 0, price: 5, scaling: 1.2, boost: 3 },
+        "B": { elem: null, for_click: true, count: 0, price: 15, scaling: 1.2, boost: 10 },
+        "X": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 75 },
+        "C": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 250 },
+        "D": { elem: null, for_click: true, count: 0, price: 200, scaling: 1.4, boost: 500 },
+        "E": { elem: null, for_click: true, count: 0, price: 1000, scaling: 1.4, boost: 1000 },
+        "F": { elem: null, for_click: true, count: 0, price: 220000, scaling: 1.4, boost: 5000 },
+        "G": { elem: null, for_click: true, count: 0, price: 1000000, scaling: 1.4, boost: 100000 },
     },
 };
 
 function update_counter_element(state) {
     counter_seconds_el.innerText = round_to(state.counter % 60, 2);
     counter_minutes_el.innerText = round_to(Math.floor(state.counter / 60) % 60, 2);
-    counter_hours_el.innerText = round_to(Math.floor(state.counter / 3600) % 27.5, 2);
-    counter_eap_el.innerText = round_to(Math.floor(state.counter / 3600 / 27.5), 2);
+    counter_hours_el.innerText = round_to(Math.floor(state.counter / 3600) % 26, 2);
+    counter_eap_el.innerText = round_to(Math.floor(state.counter / 3600 / 26), 2);
 }
 
 function update_upgrade_visibility(state) {
@@ -76,12 +89,14 @@ function pick_random(arr) {
 }
 
 // Manuaalne nupp
-button_el.onclick = (_) => {
+button_el.onclick = (e) => {
     game_state.counter += game_state.spc;
 
     let floater = document.createElement("div");
     floater.innerText = "+" + fmt_time_as_price(game_state.spc);
     floater.className = "particle";
+    floater.style.left = e.clientX + "px";
+    floater.style.top = e.clientY + "px";
     floater.style["animation-name"] = pick_random([
         "particle-motion-a",
         "particle-motion-b",
@@ -94,12 +109,18 @@ button_el.onclick = (_) => {
 }
 
 function update_per_second() {
-    let base = 0;
+    let base_auto = 0;
+    let base_manual = 0;
     for (const [_, upgrade] of Object.entries(game_state.upgrades)) {
-        base += upgrade.count * upgrade.boost;
+        if (upgrade.for_click) {
+            base_manual += upgrade.count * upgrade.boost;
+        } else {
+            base_auto += upgrade.count * upgrade.boost;
+        }
     }
-    game_state.cps = base;
-    per_second_el.innerText = fmt_time_as_price(base);
+    game_state.cps = base_auto;
+    game_state.spc = base_manual;
+    per_second_el.innerText = fmt_time_as_price(base_auto);
 }
 
 function init_upgrades() {
@@ -124,7 +145,11 @@ function init_upgrades() {
             update_per_second();
         }
 
-        upgrade_container_el.appendChild(upgrade.elem);
+        if (upgrade.for_click) {
+            manual_upgrade_container_el.appendChild(upgrade.elem);
+        } else {
+            auto_upgrade_container_el.appendChild(upgrade.elem);
+        }
     }
 }
 
@@ -133,6 +158,11 @@ function update(time) {
 
     game_state.time = time;
     game_state.counter += game_state.cps * dt;
+
+    // Failsafe, vältimaks softlocki
+    if (actual_game_state.spc <= 1) {
+        actual_game_state.spc = 1;
+    }
 
     window.requestAnimationFrame(update);
 }
@@ -157,6 +187,11 @@ function try_load_save() {
     } catch (e) {
         console.log(`failed to load save: ${e}`);
     }
+}
+
+function delete_save() {
+    localStorage.clear();
+    window.location.reload();
 }
 
 try_load_save();
