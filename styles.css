@@ -3,18 +3,18 @@
     --btn-highlight: #4d7acf;
 }
 
-* {
-    font-family: "Rubik";
-}
-
 html, body {
     height: 100%;
     margin: 0px;
 }
 
 body {
+    font-family: "Rubik";
     display: flex;
     flex-direction: column;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.6;
 }
 
 nav {
@@ -43,15 +43,22 @@ a {
     color: black;
 }
 
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
 .img_div {
     display: flex;
     gap: 10px;
 }
+
 .img_div img {
     flex: 1;
     width: 50%;
     height: auto;
 }
+
 .main-content {
     flex: 1;
     margin-left: 8px;
@@ -108,6 +115,7 @@ button:disabled {
   width: 50%;
   align-content: center;
 }
+
 .center-text>h1 {
   margin-bottom: 1vh;
 }

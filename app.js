@@ -19,10 +19,10 @@ function fmt_time_as_price(seconds) {
         return `${round_to(seconds, 2)} s`
     } else if (seconds < 3600) {
         return `${round_to(seconds / 60, 2)} min`
-    } else if (seconds < 3600 * 27.5) {
+    } else if (seconds < 3600 * 26) {
         return `${round_to(seconds / 3600, 2)} h`
     } else {
-        return `${round_to(seconds / 3600 / 27.5, 2)} EAP`
+        return `${round_to(seconds / 3600 / 26, 2)} EAP`
     }
 }
 
@@ -56,8 +56,8 @@ let actual_game_state = {
 function update_counter_element(state) {
     counter_seconds_el.innerText = round_to(state.counter % 60, 2);
     counter_minutes_el.innerText = round_to(Math.floor(state.counter / 60) % 60, 2);
-    counter_hours_el.innerText = round_to(Math.floor(state.counter / 3600) % 27.5, 2);
-    counter_eap_el.innerText = round_to(Math.floor(state.counter / 3600 / 27.5), 2);
+    counter_hours_el.innerText = round_to(Math.floor(state.counter / 3600) % 26, 2);
+    counter_eap_el.innerText = round_to(Math.floor(state.counter / 3600 / 26), 2);
 }
 
 function update_upgrade_visibility(state) {
