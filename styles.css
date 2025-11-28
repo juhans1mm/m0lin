@@ -34,18 +34,18 @@ nav>a {
 }
 
 nav>a:hover {
-    color: #ABD4ED;
+    color: #abd4ed;
     text-decoration: underline;
 }
 
 a {
     text-decoration: none;
-    color: black;
+    color: #1976d2;;
 }
 
 h1 {
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: bold;
 }
 
 .img_div {
@@ -102,10 +102,6 @@ button:hover {
 button:disabled {
     background-color: gray;
     color: lightgray;
-}
-
-.bold {
-    font-weight: bold;
 }
 
 .center-text {
