@@ -43,19 +43,19 @@ let actual_game_state = {
         "Altkäemaks õppejõule🤑":   { elem: null, for_click: false, count: 0, price: 594000, scaling: 1.2, boost: 10000 },
 
         // Käsitsi kasutuseks
-        "Uus vihik📘": { elem: null, for_click: true, count: 0, price: 5, scaling: 1.2, boost: 3 },
+        "Uus vihik📘":               { elem: null, for_click: true, count: 0, price: 5, scaling: 1.2, boost: 3 },
         "Tegelik huvi aine vastu💡": { elem: null, for_click: true, count: 0, price: 15, scaling: 1.2, boost: 10 },
-        "Slaididelt õppimine📊": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 75 },
-        "Rööprähklemine🤹‍♂️": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 250 },
-        "Windows -> Linux🐧": { elem: null, for_click: true, count: 0, price: 200, scaling: 1.4, boost: 500 },
-        "Nepotism⚜️": { elem: null, for_click: true, count: 0, price: 1000, scaling: 1.4, boost: 1000 },
-        "Sõbard <i>vol</i>. 2💛": { elem: null, for_click: true, count: 0, price: 220000, scaling: 1.4, boost: 5000 },
-        "GPT-5⚛️": { elem: null, for_click: true, count: 0, price: 1000000, scaling: 1.4, boost: 100000 },
+        "Slaididelt õppimine📊":     { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 75 },
+        "Rööprähklemine🤹‍♂️":          { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 250 },
+        "Windows -> Linux🐧":        { elem: null, for_click: true, count: 0, price: 200, scaling: 1.4, boost: 500 },
+        "Nepotism⚜️":                { elem: null, for_click: true, count: 0, price: 1000, scaling: 1.4, boost: 1000 },
+        "Sõbard <i>vol</i>. 2💛":    { elem: null, for_click: true, count: 0, price: 220000, scaling: 1.4, boost: 5000 },
+        "GPT-5⚛️":                   { elem: null, for_click: true, count: 0, price: 1000000, scaling: 1.4, boost: 100000 },
     },
 };
 
 function update_counter_element(state) {
-    counter_seconds_el.innerText = round_to(state.counter % 60, 2);
+    counter_seconds_el.innerText = Math.round(state.counter % 60);
     counter_minutes_el.innerText = round_to(Math.floor(state.counter / 60) % 60, 2);
     counter_hours_el.innerText = round_to(Math.floor(state.counter / 3600) % 26, 2);
     counter_eap_el.innerText = round_to(Math.floor(state.counter / 3600 / 26), 2);
