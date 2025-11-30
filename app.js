@@ -127,12 +127,18 @@ function update_per_second() {
 function init_upgrades() {
     for (const name in game_state.upgrades) {
         const upgrade = game_state.upgrades[name];
+
         const upgrade_text = (upgrade) => {
-            return `(${upgrade.count}) osta <b>${name}</b>, hind: ${fmt_time_as_price(upgrade.price)}`;
+            return `(${upgrade.count}) <b>${name}</b> (${fmt_time_as_price(upgrade.price)})`;
         }
 
         upgrade.elem = document.createElement("button")
         upgrade.elem.innerHTML = upgrade_text(upgrade);
+
+        const unit = upgrade.for_click ? "klikk" : "s";
+        const gain = `${fmt_time_as_price(upgrade.boost)} / ${unit}`;
+        upgrade.elem.title = gain;
+
         upgrade.elem.onclick = (_) => {
             if (game_state.counter < upgrade.price) {
                 return;
