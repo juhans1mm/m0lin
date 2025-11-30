@@ -33,28 +33,29 @@ let actual_game_state = {
     spc: 1.0,
     upgrades: {
         // automaatne
-        "zoute pinda's": { elem: null, for_click: false, count: 0, price: 10, scaling: 1.2, boost: 1   },
-        "kohv":          { elem: null, for_click: false, count: 0, price: 25, scaling: 1.2, boost: 2.5 },
-        "energiajook":   { elem: null, for_click: false, count: 0, price: 100, scaling: 1.2, boost: 10 },
-        "pitsa":         { elem: null, for_click: false, count: 0, price: 150, scaling: 1.2, boost: 65 },
-        "pomodoro":      { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 150 },
-        "Y":             { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 500 },
-        "ghostwriter":   { elem: null, for_click: false, count: 0, price: 100000, scaling: 1.2, boost: 1000 },
-        "altkäemaks":    { elem: null, for_click: false, count: 0, price: 594000, scaling: 1.2, boost: 10000 },
+        "Soolatud maapähklid🥜":    { elem: null, for_click: false, count: 0, price: 10, scaling: 1.2, boost: 1   },
+        "Kohv☕":                   { elem: null, for_click: false, count: 0, price: 25, scaling: 1.2, boost: 2.5 },
+        "Energiajook⚡":            { elem: null, for_click: false, count: 0, price: 100, scaling: 1.2, boost: 10 },
+        "Pitsa🍕":                  { elem: null, for_click: false, count: 0, price: 150, scaling: 1.2, boost: 65 },
+        "Pomodoro meetod🍅":        { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 150 },
+        "Sõbrad💛":                 { elem: null, for_click: false, count: 0, price: 750, scaling: 1.2, boost: 500 },
+        "Akadeemiline petturlus☠️": { elem: null, for_click: false, count: 0, price: 100000, scaling: 1.2, boost: 1000 },
+        "Altkäemaks õppejõule🤑":   { elem: null, for_click: false, count: 0, price: 594000, scaling: 1.2, boost: 10000 },
+
         // Käsitsi kasutuseks
-        "A": { elem: null, for_click: true, count: 0, price: 5, scaling: 1.2, boost: 3 },
-        "B": { elem: null, for_click: true, count: 0, price: 15, scaling: 1.2, boost: 10 },
-        "X": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 75 },
-        "C": { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 250 },
-        "D": { elem: null, for_click: true, count: 0, price: 200, scaling: 1.4, boost: 500 },
-        "E": { elem: null, for_click: true, count: 0, price: 1000, scaling: 1.4, boost: 1000 },
-        "F": { elem: null, for_click: true, count: 0, price: 220000, scaling: 1.4, boost: 5000 },
-        "G": { elem: null, for_click: true, count: 0, price: 1000000, scaling: 1.4, boost: 100000 },
+        "Uus vihik📘":               { elem: null, for_click: true, count: 0, price: 5, scaling: 1.2, boost: 3 },
+        "Tegelik huvi aine vastu💡": { elem: null, for_click: true, count: 0, price: 15, scaling: 1.2, boost: 10 },
+        "Slaididelt õppimine📊":     { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 75 },
+        "Rööprähklemine🤹‍♂️":          { elem: null, for_click: true, count: 0, price: 75, scaling: 1.4, boost: 250 },
+        "Windows -> Linux🐧":        { elem: null, for_click: true, count: 0, price: 200, scaling: 1.4, boost: 500 },
+        "Nepotism⚜️":                { elem: null, for_click: true, count: 0, price: 1000, scaling: 1.4, boost: 1000 },
+        "Sõbard <i>vol</i>. 2💛":    { elem: null, for_click: true, count: 0, price: 220000, scaling: 1.4, boost: 5000 },
+        "GPT-5⚛️":                   { elem: null, for_click: true, count: 0, price: 1000000, scaling: 1.4, boost: 100000 },
     },
 };
 
 function update_counter_element(state) {
-    counter_seconds_el.innerText = round_to(state.counter % 60, 2);
+    counter_seconds_el.innerText = Math.round(state.counter % 60);
     counter_minutes_el.innerText = round_to(Math.floor(state.counter / 60) % 60, 2);
     counter_hours_el.innerText = round_to(Math.floor(state.counter / 3600) % 26, 2);
     counter_eap_el.innerText = round_to(Math.floor(state.counter / 3600 / 26), 2);
@@ -126,12 +127,18 @@ function update_per_second() {
 function init_upgrades() {
     for (const name in game_state.upgrades) {
         const upgrade = game_state.upgrades[name];
+
         const upgrade_text = (upgrade) => {
-            return `(${upgrade.count}) osta <b>${name}</b>, hind: ${fmt_time_as_price(upgrade.price)}`;
+            return `(${upgrade.count}) <b>${name}</b> (${fmt_time_as_price(upgrade.price)})`;
         }
 
         upgrade.elem = document.createElement("button")
         upgrade.elem.innerHTML = upgrade_text(upgrade);
+
+        const unit = upgrade.for_click ? "klikk" : "s";
+        const gain = `${fmt_time_as_price(upgrade.boost)} / ${unit}`;
+        upgrade.elem.title = gain;
+
         upgrade.elem.onclick = (_) => {
             if (game_state.counter < upgrade.price) {
                 return;
